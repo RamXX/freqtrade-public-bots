@@ -22,3 +22,8 @@ Crypto Trading Bots for the [Freqtrade](https://freqtrade.io) framework
 # List of Strategies
 1. `onem_wavecatcher`
 Scalper strategy for the 1m timeframe. Attempts to detect 'pumps' or unusually large candles with increased volume, and rides the wave with a trailing stoploss and an exit strategy based on the T3 curve cross.
+
+# Disclaimer
+* These strategies come with no warranties whatsoever. Use at your own risk.
+* Always understand the strategy you are running.
+* Always backtest and run in dry-run mode until you are satisfied with the results.
