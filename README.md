@@ -25,5 +25,6 @@ Scalper strategy for the 1m timeframe. Attempts to detect 'pumps' or unusually l
 
 # Disclaimer
 * These strategies come with no warranties whatsoever. Use at your own risk.
+* Nothing in this repository can be construed as financial advice. These strategies are for experimentation and learning purposes only.
 * Always understand the strategy you are running.
 * Always backtest and run in dry-run mode until you are satisfied with the results.
