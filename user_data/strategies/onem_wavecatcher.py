@@ -6,7 +6,6 @@ from freqtrade.strategy import IStrategy
 from typing import Optional
 from datetime import datetime
 from freqtrade.persistence import Trade
-from functools import reduce
 from datetime import timedelta
 
 import talib.abstract as ta
@@ -25,8 +24,8 @@ class onem_wavecatcher(IStrategy):
     INTERFACE_VERSION = 3
 
     minimal_roi = {
-        #"0": 0.005
-        "0": 100
+        "0": 0.005
+        # "0": 100
     }
 
     custom_info = {
@@ -34,7 +33,7 @@ class onem_wavecatcher(IStrategy):
         'risk_reward_ratio': 1.5,
         'sl_multiplier': 3.5,
         'set_to_break_even_at_profit': 1.01,
-        'candle_size_factor': 3.0
+        'candle_size_factor': 2.0
     }
 
     # stoploss = -0.0025
@@ -52,7 +51,7 @@ class onem_wavecatcher(IStrategy):
     timeframe = '1m'
 
     # Run "populate_indicators()" only for new candle.
-    process_only_new_candles = False
+    process_only_new_candles = True
 
     # These values can be overridden in the "ask_strategy" section in the config.
     use_exit_signal = True
@@ -158,43 +157,12 @@ class onem_wavecatcher(IStrategy):
 
         return result
 
-    def confirm_trade_entry(self, pair: str, order_type: str, amount: float, rate: float,
-                            time_in_force: str, current_time: datetime, entry_tag: Optional[str],
-                            side: str, **kwargs) -> bool:
-        """
-        From NostalgiaForInfinityX by iterativ 
-        https://github.com/iterativv/NostalgiaForInfinity
-        allow force entries and protects against slippage.
-        """
-        if (entry_tag == 'force_entry'):
-            return True
-
-        dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
-
-        if(len(dataframe) < 1):
-            return True
-
-        dataframe = dataframe.iloc[-1].squeeze()
-
-        if ((rate > dataframe['close'])):
-            slippage = ((rate / dataframe['close']) - 1.0)
-
-            if slippage < 0.044:
-                return True
-            else:
-                log.warning(
-                    "Cancelling buy for %s due to slippage %s",
-                    pair, slippage
-                )
-                return False
-
-        return True
-
+   
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:       
         # T3
         dataframe['t3'] = ta.T3(dataframe, timeperiod=4, vfactor=0.7)
 
-        # Volume MA
+        # Volume MA for the last 30 minutes
         dataframe['volume_ma'] = ta.SMA(dataframe['volume'], timeperiod=30)
 
         # Stop loss
@@ -215,8 +183,7 @@ class onem_wavecatcher(IStrategy):
         dataframe.loc[
             (
                  (
-                      (dataframe['close'] > dataframe['open']) # green candle
-                    & (large_upwards_change(dataframe, factor=self.custom_info['candle_size_factor'])) # large change detected
+                      (large_upwards_change(dataframe, factor=self.custom_info['candle_size_factor'])) # large change detected
                     & (dataframe['volume'] > 0) # there must be some volume
                 )
             ),
@@ -236,8 +203,9 @@ class onem_wavecatcher(IStrategy):
                  (
                       (
                         (qtpylib.crossed_below(dataframe['close'],  dataframe['t3'])) # Lost of momentum
-                      | (dataframe['close'] <= dataframe['open'])
-                      ) # Red candle
+                        | 
+                        (dataframe['close'] <= dataframe['open']) # or we encounter the first red candle
+                      ) 
                     & (dataframe['volume'] > 0) # there must be some volume
                 ) 
             ),
@@ -263,15 +231,4 @@ def large_upwards_change(dataframe: DataFrame, factor = 3.0):
     if ((a < 0) | (a1 < 0) | (a2 < 0)):
         return False
 
-    v = dataframe['volume']
-    v1 = dataframe['volume'].shift(1)
-    v2 = dataframe['volume'].shift(2)
-
-    return (
-        (a > a1) &
-        (a1 > a2) &
-        (a/(a1+a2) >= factor) &
-        (v >= dataframe['volume_ma']) &
-        (v > v1) &
-        (v1 > v2)
-    )
+    return (((a1+a2)*factor <= a) & (dataframe['volume'] >= dataframe['volume_ma']))
