@@ -19,9 +19,25 @@ Crypto Trading Bots for the [Freqtrade](https://freqtrade.io) framework
  * Copy the strategy file to your own `user_data/strategies` directory and the config file to your own root directory for `freqtrade`.
 * Execute the proper commands, such as `freqtrade trade -c <path-to-config> --strategy <strategy-name>`.
 
+If you want to run the `all_kc_pairs.py` utility, you will need to pip install the dependencies first by executing:
+`pip3 install -r requirements.txt`
 # List of Strategies
 1. `onem_wavecatcher`
 Scalper strategy for the 1m timeframe. Attempts to detect 'pumps' or unusually large candles with increased volume, and rides the wave with a trailing stoploss and an exit strategy based on the T3 curve cross.
+2. `TheForce`
+15m scalper strategy based on the EMA5 close crossing EMA5 open, as well as Stochastic fast indicator. I'm not certain about the origin of this strategy, but I originally found it [here](https://github.com/StephaneTurquay/freqtrade-strategies-crypto-trading-bot). This one is unmodified, with the exeption of commenting out the Stochastic RSI indicator which is not used.
+3. `TheForceMod_1`
+This version adds additional constraints for more precise entries and exits, checks BTC and ETH status,
+and implements a circuit breaker that sells the entire portfolio if a major drop happens to BTC and ETH
+due to the high correlation with other coins.
+4. `TheForceMod_2`
+This is a 5m version that checks indicators for the 15m and 1h timeframes. It uses additional indicators such as ZLMA and Volume-weighted EMA.
+5. `TheForceMod_3`
+5m version that check indicators in the 4h timeframe. It also checks BTC and ETH, and uses T3 and ADX to measure thresholds and trends.
+6. `TheForceMod_4`
+This version replaces the core EMA5c/o for an EMA 8/21 cross on close.
+7. `HyperStra_GSN_SMAOnly`
+By @Farhad#0318. Idea from GodStraNew_SMAOnly. Performs well in sideways markets.
 
 # Disclaimer
 * These strategies come with no warranties whatsoever. Use at your own risk.

@@ -1,0 +1,201 @@
+{
+    "max_open_trades": 10,
+    "stake_currency": "USDT",
+    "stake_amount": "unlimited",
+    "tradable_balance_ratio": 0.90,
+    "fiat_display_currency": "USD",
+    "dry_run": true,
+    "dry_run_wallet": 50000,
+    "cancel_open_orders_on_exit": false,
+    "trading_mode": "spot",
+    "margin_mode": "",
+    "unfilledtimeout": {
+        "entry": 10,
+        "exit": 10,
+        "exit_timeout_count": 0,
+        "unit": "minutes"
+    },
+    "entry_pricing": {
+        "price_side": "other",
+        "use_order_book": true,
+        "order_book_top": 1,
+        "price_last_balance": 0.0,
+        "check_depth_of_market": {
+            "enabled": false,
+            "bids_to_ask_delta": 1
+        }
+    },
+    "exit_pricing":{
+        "price_side": "other",
+        "use_order_book": true,
+        "order_book_top": 1
+    },
+
+    "order_types": {
+        "entry": "limit",
+        "exit": "limit",
+        "emergency_exit": "market",
+        "force_entry": "limit",
+        "force_exit": "limit",
+        "stoploss": "limit",
+        "stoploss_on_exchange": true,
+        "stoploss_on_exchange_interval": 60
+    },
+
+    "order_time_in_force": {
+        "entry": "gtc",
+        "exit": "gtc"
+    },
+
+    "exchange": {
+        "name": "kucoin",
+        "key": "your-key",
+        "secret": "your-secret",
+        "password": "your-password",
+        "ccxt_config": {
+            "enableRateLimit": true
+        },
+        "ccxt_async_config": {
+            "enableRateLimit": true,
+            "rateLimit": 500,
+            "timeout": 60000
+        },
+        "pair_whitelist": [
+            [
+                "BTC/USDT", 
+                "ETH/USDT", 
+                "BNB/USDT",
+                "XRP/USDT", 
+                "SOL/USDT", 
+                "LUNA/USDT",
+                "LUNC/USDT", 
+                "ADA/USDT", 
+                "AVAX/USDT", 
+                "DOT/USDT", 
+                "DOGE/USDT", 
+                "SHIB/USDT", 
+                "NEAR/USDT", 
+                "MATIC/USDT",
+                "LTC/USDT", 
+                "ATOM/USDT", 
+                "LINK/USDT",
+                "BCH/USDT",
+                "CHZ/USDT",
+                "TRX/USDT",
+                "XLM/USDT",
+                "ALGO/USDT",
+                "ETC/USDT",
+                "XMR/USDT",
+                "UNI/USDT",
+                "VET/USDT",
+                "HBAR/USDT",
+                "ICP/USDT",
+                "ROSE/USDT",
+                "EGLD/USDT",
+                "APE/USDT",
+                "SAND/USDT",
+                "MANA/USDT",
+                "THETA/USDT",
+                "FTM/USDT",
+                "XTZ/USDT",
+                "RUNE/USDT",
+                "EOS/USDT",
+                "GRT/USDT",
+                "WAVES/USDT",
+                "FXS/USDT",
+                "GMT/USDT",
+                "ZEC/USDT",
+                "ZIL/USDT",
+                "NEO/USDT",
+                "AR/USDT",
+                "ONE/USDT",
+                "KSM/USDT",
+                "QNT/USDT",
+                "STX/USDT",
+                "BAT/USDT"
+                ]                
+        ],
+        "pair_blacklist": [
+            "KCS/USDT",
+            ".*3S/USDT",
+            ".*3L/USDT"
+        ]
+    },
+    "pairlists": [
+        {
+            "method": "StaticPairList"
+        },
+        {
+            "method": "ShuffleFilter"
+        },
+        {
+            "method": "AgeFilter",
+            "min_days_listed": 3
+        }
+    ],
+    "edge": {
+        "enabled": false,
+        "process_throttle_secs": 3600,
+        "calculate_since_number_of_days": 7,
+        "allowed_risk": 0.01,
+        "stoploss_range_min": -0.01,
+        "stoploss_range_max": -0.1,
+        "stoploss_range_step": -0.01,
+        "minimum_winrate": 0.60,
+        "minimum_expectancy": 0.20,
+        "min_trade_number": 10,
+        "max_trade_duration_minute": 1440,
+        "remove_pumps": false
+    },
+    "telegram": {
+        "enabled": true,
+        "token": "your-token",
+        "chat_id": "your-chat-id",
+        "notification_settings": {
+            "status": "silent",
+            "warning": "on",
+            "startup": "off",
+            "entry": "silent",
+            "exit": {
+                "roi": "silent",
+                "emergency_sell": "on",
+                "force_sell": "on",
+                "sell_signal": "silent",
+                "trailing_stop_loss": "on",
+                "stop_loss": "on",
+                "stoploss_on_exchange": "on",
+                "custom_sell": "silent"
+            },
+            "enter_cancel": "silent",
+            "exit_cancel": "on",
+            "enter_fill": "off",
+            "exit_fill": "off",
+            "protection_trigger": "on",
+            "protection_trigger_global": "on"
+        },
+        "reload": true,
+        "balance_dust_level": 0.01,
+        "keyboard": [   
+            ["/daily", "/stats", "/balance", "/profit"],
+            ["/status table", "/performance", "/stopbuy", "/trades"],
+            ["/reload_config", "/count", "/logs", "/whitelist", "/blacklist"]
+        ]
+    },
+    "api_server": {
+        "enabled": true,
+        "listen_ip_address": "0.0.0.0",
+        "listen_port": 8080,
+        "verbosity": "error",
+        "enable_openapi": false,
+        "jwt_secret_key": "your-jwt-key",
+        "CORS_origins": [],
+        "username": "freqtrader",
+        "password": "your-password"
+    },
+    "bot_name": "freqtrade",
+    "initial_state": "running",
+    "force_entry_enable": false,
+    "internals": {
+        "process_throttle_secs": 5
+    }
+}
