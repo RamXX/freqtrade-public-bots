@@ -36,7 +36,9 @@ This is a 5m version that checks indicators for the 15m and 1h timeframes. It us
 5m version that check indicators in the 4h timeframe. It also checks BTC and ETH, and uses T3 and ADX to measure thresholds and trends.
 6. `TheForceMod_4`
 This version replaces the core EMA5c/o for an EMA 8/21 cross on close.
-7. `HyperStra_GSN_SMAOnly`
+7. `TheForceMod_5`
+This version does not use exit signals but increases the accuracy of entries and relies on ROI/stoploss only for exits. Hyperopted for the config file portfolio.
+8. `HyperStra_GSN_SMAOnly`
 By @Farhad#0318. Idea from GodStraNew_SMAOnly. Performs well in sideways markets.
 
 # Disclaimer
