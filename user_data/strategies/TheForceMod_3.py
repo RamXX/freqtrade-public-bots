@@ -25,7 +25,7 @@ log = logging.getLogger(__name__)
 # ----
 # Mods made by @hextropian (Twitter), a.k.a. as DrWho?#8511 (Discord)
 # Use at your own risk - no warranties of success whatsoever.
-class TheForce3(IStrategy):
+class TheForceMod_3(IStrategy):
   
     INTERFACE_VERSION = 3
 

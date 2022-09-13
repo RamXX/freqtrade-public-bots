@@ -1,11 +1,8 @@
 # pragma pylint: disable=missing-docstring, invalid-name, pointless-string-statement
 
-import pandas_ta as pta
-import numpy as np
-
 from pandas import DataFrame
 
-from freqtrade.strategy import IStrategy, merge_informative_pair, CategoricalParameter, IntParameter, DecimalParameter
+from freqtrade.strategy import IStrategy, merge_informative_pair, CategoricalParameter
 from typing import Optional
 from datetime import datetime
 from freqtrade.persistence import Trade
@@ -28,7 +25,7 @@ log = logging.getLogger(__name__)
 # but users may want to tweak based on asset portfolio.
 # Mods made by @hextropian (Twitter), a.k.a. as DrWho?#8511 (Discord)
 # Use at your own risk - no warranties of success whatsoever.
-class TheForce3_821(IStrategy):
+class TheForceMod_4(IStrategy):
   
     INTERFACE_VERSION = 3
 
@@ -71,22 +68,6 @@ class TheForce3_821(IStrategy):
     # Number of candles the strategy requires before producing valid signals
     startup_candle_count: int = 60
 
-    # Optional order type mapping.
-    order_types = {
-        'entry': 'limit',
-        'exit': 'limit',
-        'emergency_exit': 'market',
-        'force_entry': 'market',
-        'force_exit': 'market',
-        'stoploss': 'limit',
-        'stoploss_on_exchange': False
-    }
-
-    # Optional order time in force.
-    order_time_in_force = {
-        'enter': 'gtc',
-        'exit': 'gtc'
-    }
 
     # Hyperoptable parameters
     # Enter conditions
@@ -178,19 +159,6 @@ class TheForce3_821(IStrategy):
         assert self.dp, 'DataProvider is required for multiple timeframes.'
         # Get the informative pairs
         informative_15m = self.dp.get_pair_dataframe(pair=metadata['pair'], timeframe='15m')
-
-        # informative_BTC = self.dp.get_pair_dataframe(pair=f"BTC/USDT", timeframe='15m')
-        # informative_ETH = self.dp.get_pair_dataframe(pair=f"ETH/USDT", timeframe='15m')
-
-        # btc_close = informative_BTC['close']
-        # eth_close = informative_ETH['close']
-
-        # informative_15m['macro_ok'] = (
-        #       (btc_close >= btc_close.shift(1)) 
-        #     # & (btc_close.shift(1) >= btc_close.shift(2))
-        #     & (eth_close >= eth_close.shift(1))
-        #     # & (eth_close.shift(1) >= eth_close.shift(2)) 
-        # )
 
         return informative_15m
 
@@ -329,12 +297,6 @@ class TheForce3_821(IStrategy):
             (   # Condition 1: EMA8 close over EMA21 open
                 self.enter_condition_1_enable.value &
                 (qtpylib.crossed_above(dataframe['ema8'],  dataframe['ema21']))
-            )
-        )
-        conditions.append(
-            (   # Condition 2: Only trade if both, BTC and ETH are trading above their macro indicators
-                self.enter_condition_2_enable.value &
-                (dataframe['macro_ok_15m']) 
             )
         )
         conditions.append(
