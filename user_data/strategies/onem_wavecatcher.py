@@ -3,16 +3,12 @@
 from pandas import DataFrame
 
 from freqtrade.strategy import IStrategy
-from typing import Optional
 from datetime import datetime
 from freqtrade.persistence import Trade
 from datetime import timedelta
 
 import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
-import logging
-
-log = logging.getLogger(__name__)
 
 # 1m scalper strategy designed to catch pump waves early. 
 # It looks at ALL pairs in KuCoin (can be adapted to others)
@@ -157,7 +153,7 @@ class onem_wavecatcher(IStrategy):
    
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:       
         # T3
-        dataframe['t3'] = ta.T3(dataframe, timeperiod=4, vfactor=0.7)
+        dataframe['t3'] = ta.T3(dataframe['close'], timeperiod=4, vfactor=0.7)
 
         # Volume MA for the last 30 minutes
         dataframe['volume_ma'] = ta.SMA(dataframe['volume'], timeperiod=30)
@@ -205,6 +201,7 @@ class onem_wavecatcher(IStrategy):
             'exit_long'] = 1
 
         return dataframe
+
 
 # Helper function 
 def to_minutes(**timdelta_kwargs):
