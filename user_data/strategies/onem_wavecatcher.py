@@ -179,10 +179,8 @@ class onem_wavecatcher(IStrategy):
         
         dataframe.loc[
             (
-                 (
-                      (large_upwards_change(dataframe, factor=self.custom_info['candle_size_factor'])) # large change detected
-                    & (dataframe['volume'] > 0) # there must be some volume
-                )
+                  (large_upwards_change(dataframe, factor=self.custom_info['candle_size_factor'])) # large change detected
+                & (dataframe['volume'] > 0) # there must be some volume
             ),
             'enter_long'] = 1
 
@@ -197,14 +195,12 @@ class onem_wavecatcher(IStrategy):
         
         dataframe.loc[
             (
-                 (
                       (
                         (qtpylib.crossed_below(dataframe['close'],  dataframe['t3'])) # Lost of momentum
                         | 
                         (dataframe['close'] <= dataframe['open']) # or we encounter the first red candle
                       ) 
                     & (dataframe['volume'] > 0) # there must be some volume
-                ) 
             ),
             'exit_long'] = 1
 
