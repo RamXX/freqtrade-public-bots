@@ -17,15 +17,14 @@ log = logging.getLogger(__name__)
 # 1m scalper strategy designed to catch pump waves early. 
 # It looks at ALL pairs in KuCoin (can be adapted to others)
 # ----
-# Mods made by @hextropian (Twitter), a.k.a. as DrWho?#8511 (Discord)
+# Written by @hextropian (Twitter), a.k.a. as DrWho?#8511 (Discord)
 # Use at your own risk - no warranties whatsoever.
 class onem_wavecatcher(IStrategy):
   
     INTERFACE_VERSION = 3
 
     minimal_roi = {
-        # "0": 0.005
-        "0": 100
+        "0": 100 # Basically disabled
     }
 
     custom_info = {
@@ -33,14 +32,12 @@ class onem_wavecatcher(IStrategy):
         'risk_reward_ratio': 1.5,
         'sl_multiplier': 3.5,
         'set_to_break_even_at_profit': 1.0,
-        'candle_size_factor': 2.0
+        'candle_size_factor': 3.8
     }
 
-    # stoploss = -0.0025
-    stoploss = -0.99
+    stoploss = -0.99 # Basically disabled
     use_custom_stoploss = True # We use a custom function for fixed risk/reward.
 
-    # Hyperopted numbers
     # Trailing stop:
     trailing_stop = True
     trailing_stop_positive = 0.341
@@ -51,7 +48,7 @@ class onem_wavecatcher(IStrategy):
     timeframe = '1m'
 
     # Run "populate_indicators()" only for new candle.
-    process_only_new_candles = True
+    process_only_new_candles = False
 
     # These values can be overridden in the "ask_strategy" section in the config.
     use_exit_signal = True
@@ -166,7 +163,7 @@ class onem_wavecatcher(IStrategy):
         dataframe['volume_ma'] = ta.SMA(dataframe['volume'], timeperiod=30)
 
         # Stop loss
-        dataframe['stoploss_rate'] = dataframe['close'] - (ta.ATR(dataframe, timeperiod=30) * self.custom_info['sl_multiplier'])
+        dataframe['stoploss_rate'] = dataframe['close'] - (ta.ATR(dataframe['close'], timeperiod=30) * self.custom_info['sl_multiplier'])
         
         self.custom_info[metadata['pair']] = dataframe[['date', 'stoploss_rate']].copy().set_index('date')
 

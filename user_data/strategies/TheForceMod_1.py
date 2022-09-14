@@ -204,10 +204,10 @@ class TheForceMod_1(IStrategy):
                     )
                     |
                     (
-                        # (
-                        #     dataframe['close'] < dataframe['kc_mid']
-                        # )
-                        # &
+                        (
+                            dataframe['close'] < dataframe['kc_mid']
+                        )
+                        &
                         (
                             (dataframe['fastk'] <= 80)
                             &

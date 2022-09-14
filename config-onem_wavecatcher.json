@@ -61,7 +61,6 @@
             "timeout": 60000
         },
         "pair_whitelist": [
-            [
                 "1EARTH/USDT",
                 "1INCH/USDT",
                 "2CRZ/USDT",
@@ -728,8 +727,7 @@
                 "ZEC/USDT",
                 "ZEE/USDT",
                 "ZEN/USDT",
-                "ZIL/USDT"
-                ]                
+                "ZIL/USDT"          
         ],
         "pair_blacklist": [
             "KCS/USDT",
