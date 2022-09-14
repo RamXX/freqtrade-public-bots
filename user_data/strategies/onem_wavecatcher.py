@@ -159,7 +159,9 @@ class onem_wavecatcher(IStrategy):
         dataframe['volume_ma'] = ta.SMA(dataframe['volume'], timeperiod=30)
 
         # Stop loss
-        dataframe['stoploss_rate'] = dataframe['close'] - (ta.ATR(dataframe['close'], timeperiod=30) * self.custom_info['sl_multiplier'])
+        dataframe['stoploss_rate'] = dataframe['close'] - (ta.ATR(dataframe['high'],
+                                                                  dataframe['low'], dataframe['close'], 
+                                                                  timeperiod=30) * self.custom_info['sl_multiplier'])
         
         self.custom_info[metadata['pair']] = dataframe[['date', 'stoploss_rate']].copy().set_index('date')
 
