@@ -8,6 +8,7 @@ from freqtrade.persistence import Trade
 from datetime import timedelta
 
 import talib.abstract as ta
+import numpy as np
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 # 1m scalper strategy designed to catch pump waves early. 
@@ -219,8 +220,11 @@ def large_upwards_change(dataframe: DataFrame, factor = 3.0):
     a1 = dataframe['close'].shift(1) - dataframe['open'].shift(1)
     a2 = dataframe['close'].shift(2) - dataframe['open'].shift(2)
 
-    # The current and last two previous candles need to be green
-    if ((a < 0) | (a1 < 0) | (a2 < 0)):
+    if (
+        (np.less(a, 0)) | 
+        (np.less(a1, 0)) |
+        (np.less(a2, 0))
+    ):
         return False
 
     return (((a1+a2)*factor <= a) & (dataframe['volume'] >= dataframe['volume_ma']))
