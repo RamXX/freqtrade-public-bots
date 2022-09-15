@@ -175,11 +175,16 @@ class onem_wavecatcher(IStrategy):
     ##                                                                             ## 
     ################################################################################# 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
-        
+        a = dataframe['close'] - dataframe['open']
+        a1 = dataframe['close'].shift(1) - dataframe['open'].shift(1)
+        a2 = dataframe['close'].shift(2) - dataframe['open'].shift(2)
+
         dataframe.loc[
             (
-                  (large_upwards_change(dataframe, factor=self.custom_info['candle_size_factor'])) # large change detected
-                & (dataframe['volume'] > 0) # there must be some volume
+                  ((a >= 0) & (a1 >= 0) & (a2 >= 0))
+                & (((a1+a2)*self.custom_info['candle_size_factor'] <= a) 
+                & (dataframe['volume'] >= dataframe['volume_ma']))
+                & (dataframe['volume'] > 0)
             ),
             'enter_long'] = 1
 
@@ -194,12 +199,12 @@ class onem_wavecatcher(IStrategy):
         
         dataframe.loc[
             (
-                      (
-                        (qtpylib.crossed_below(dataframe['close'],  dataframe['t3'])) # Lost of momentum
-                        | 
-                        (dataframe['close'] <= dataframe['open']) # or we encounter the first red candle
-                      ) 
-                    & (dataframe['volume'] > 0) # there must be some volume
+                (
+                    (qtpylib.crossed_below(dataframe['close'],  dataframe['t3'])) # Lost of momentum
+                    | 
+                    (dataframe['close'] <= dataframe['open']) # or we encounter the first red candle
+                ) 
+            & (dataframe['volume'] > 0) # there must be some volume
             ),
             'exit_long'] = 1
 
@@ -209,22 +214,3 @@ class onem_wavecatcher(IStrategy):
 # Helper function 
 def to_minutes(**timdelta_kwargs):
     return int(timedelta(**timdelta_kwargs).total_seconds() / 60)
-
-
-def large_upwards_change(dataframe: DataFrame, factor = 3.0):
-    """
-    Checks if there is a large upward change in 
-    the last 2 previous candles.
-    """
-    a = dataframe['close'] - dataframe['open']
-    a1 = dataframe['close'].shift(1) - dataframe['open'].shift(1)
-    a2 = dataframe['close'].shift(2) - dataframe['open'].shift(2)
-
-    if (
-        (np.less(a, 0)) | 
-        (np.less(a1, 0)) |
-        (np.less(a2, 0))
-    ):
-        return False
-
-    return (((a1+a2)*factor <= a) & (dataframe['volume'] >= dataframe['volume_ma']))
