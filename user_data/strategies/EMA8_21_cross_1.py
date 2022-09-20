@@ -1,4 +1,4 @@
-# EMA8_21_cross - Designed to backtest the 8/21 strategy on the weekly timeframe.
+# EMA8_21_cross_1 - Designed to backtest the 8/21 strategy on the weekly timeframe.
 #
 # --- Required -- do not remove these libs ---
 from freqtrade.strategy import IStrategy
@@ -10,14 +10,13 @@ import talib.abstract as ta
 import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 
-class EMA8_21_cross(IStrategy):
+class EMA8_21_cross_1(IStrategy):
     """
-    EMA8_21_cross - Designed to backtest the 8/21 strategy on the weekly.
+    EMA8_21_cross_1 - Designed to backtest the 8/21 strategy on the weekly.
     In essence, it buys when EMA 8 crosses EMA 21 upwards, and sells in the reverse situation.
     It has ROI and stoploss disabled in order to ONLY use signals for entries and exits.
-    Optionally, you can uncomment the EMA 200 measurements which will only trade if the macro trend
-    is trending upwards. This is disabled by default to make sure the strategy is tested under all
-    conditions.
+    This is a basic, barebone strategy created to assess the effectiveness of the 8/21 cross.
+    Other versions in this repo add additional constraints.
     """
     # Weekly timeframe
     timeframe = "1w"
@@ -41,8 +40,8 @@ class EMA8_21_cross(IStrategy):
     process_only_new_candles = False
 
     # Number of candles the strategy requires before producing valid signals
-    startup_candle_count: int = 42 # replace by 400 if using EMA 200. Make sure you have enough downloaded data for backtesting.
-
+    startup_candle_count: int = 42 
+    
     # Experimental settings (configuration will overide these if set)
     use_exit_signal = True
     sell_profit_only = False
@@ -53,7 +52,6 @@ class EMA8_21_cross(IStrategy):
         
         dataframe['ema8'] = ta.EMA(dataframe['close'], timeperiod=8)
         dataframe['ema21'] = ta.EMA(dataframe['close'], timeperiod=21)
-        # dataframe['ema200'] = ta.EMA(dataframe['close'], timeperiod=200)
 
        
         return dataframe
@@ -61,8 +59,7 @@ class EMA8_21_cross(IStrategy):
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
             (
-                # (dataframe['close'] >= dataframe['ema200']) &
-                (qtpylib.crossed_above(dataframe['ema8'],  dataframe['ema21'])) &
+                (qtpylib.crossed_above(dataframe['ema8'], dataframe['ema21'])) &
                 (dataframe['volume'] > 0)
             ),
             'enter_long'] = 1
