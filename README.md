@@ -53,6 +53,8 @@ Based on [10],  this version triggers a buy only if the EMA 8 is over the 21 AND
 candles close above the EMA 8.
 For selling, we also need the current and previous candle close below the EMA 21.
 This version adds an additiona constraing: buys only happen over the 200 SMA. Sales happen if the close gets below that line also.
+13. `EMA_8_21_cross_5`
+This strategy uses both, shorts and longs, at a 4% distance of the cross entry point. Originally discussed by Discord users `EverForwardTech1972#1558` and `ChinaMatt#2982` (who coded it into Pine script) in the `.786 unlimited` [Discord](https://discord.gg/Sa8DxXdV).
 
 # Disclaimer
 * These strategies come with no warranties whatsoever. Use at your own risk.
