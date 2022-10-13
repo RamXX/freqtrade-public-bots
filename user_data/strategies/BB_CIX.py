@@ -21,33 +21,33 @@ log = logging.getLogger(__name__)
 
 # Hyperopted parameters:
 # freqtrade hyperopt -c ./config-single.json --strategy BB_CIX --hyperopt-loss SharpeHyperOptLoss --timerange=20220101- -e 1000 --spaces stoploss roi trailing
-# 243/1000:    274 trades. 264/0/10 Wins/Draws/Losses. 
-# Avg profit   1.15%. 
-# Median profit   1.51%. 
-# Total profit 16268.95796529 USDT (  32.54%). 
-# Avg duration 13:35:00 min. 
-# Objective: -4.31843
+# 518/1000:    589 trades. 354/0/235 Wins/Draws/Losses. 
+# Avg profit   0.41%. 
+# Median profit   0.08%. 
+# Total profit 288681.10608409 USDT ( 577.36%). 
+# Avg duration 3:37:00 min. 
+# Objective: -4.37348
 
 class BB_CIX(IStrategy):
   
     INTERFACE_VERSION = 3
 
     minimal_roi = {
-        "0": 0.085,
-        "104": 0.032,
-        "282": 0.015,
-        "539": 0
+        "0": 0.224,
+        "116": 0.14,
+        "240": 0.05,
+        "422": 0
     }
 
     # stoploss = -0.99 # Effectively disabled
-    stoploss = -0.212 # Hyperopted
+    stoploss = -0.026 # Hyperopted
     use_custom_stoploss = False 
 
     # Hyperopted numbers
     # Trailing stop:
     trailing_stop = True
-    trailing_stop_positive = 0.14
-    trailing_stop_positive_offset = 0.158
+    trailing_stop_positive = 0.01
+    trailing_stop_positive_offset = 0.039
     trailing_only_offset_is_reached = True
 
     # Optimal timeframe for the strategy.
@@ -57,7 +57,7 @@ class BB_CIX(IStrategy):
     process_only_new_candles = True
 
     # These values can be overridden in the "ask_strategy" section in the config.
-    use_exit_signal = False
+    use_exit_signal = True
     exit_profit_only = False
     ignore_roi_if_entry_signal = False
 
@@ -147,4 +147,3 @@ class BB_CIX(IStrategy):
 # Helper function 
 def to_minutes(**timdelta_kwargs):
     return int(timedelta(**timdelta_kwargs).total_seconds() / 60)
-
