@@ -19,28 +19,36 @@ log = logging.getLogger(__name__)
 # Designed and written by @hextropian (Twitter), a.k.a. as DrWho?#8511 (Discord)
 # Use at your own risk - no warranties of success whatsoever.
 
+# Hyperopted parameters:
+# freqtrade hyperopt -c ./config-single.json --strategy BB_CIX --hyperopt-loss SharpeHyperOptLoss --timerange=20220101- -e 1000 --spaces stoploss roi trailing
+# 243/1000:    274 trades. 264/0/10 Wins/Draws/Losses. 
+# Avg profit   1.15%. 
+# Median profit   1.51%. 
+# Total profit 16268.95796529 USDT (  32.54%). 
+# Avg duration 13:35:00 min. 
+# Objective: -4.31843
+
 class BB_CIX(IStrategy):
   
     INTERFACE_VERSION = 3
 
-    # Hyperopted
     minimal_roi = {
-        "0": 0.195,
-        "44": 0.035,
-        "163": 0.02,
-        "517": 0
+        "0": 0.085,
+        "104": 0.032,
+        "282": 0.015,
+        "539": 0
     }
 
     # stoploss = -0.99 # Effectively disabled
-    stoploss = -0.228 # Hyperopted
+    stoploss = -0.212 # Hyperopted
     use_custom_stoploss = False 
 
     # Hyperopted numbers
     # Trailing stop:
     trailing_stop = True
-    trailing_stop_positive = 0.11
-    trailing_stop_positive_offset = 0.204
-    trailing_only_offset_is_reached = False
+    trailing_stop_positive = 0.14
+    trailing_stop_positive_offset = 0.158
+    trailing_only_offset_is_reached = True
 
     # Optimal timeframe for the strategy.
     timeframe = '15m'
