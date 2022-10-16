@@ -55,8 +55,10 @@ For selling, we also need the current and previous candle close below the EMA 21
 This version adds an additiona constraing: buys only happen over the 200 SMA. Sales happen if the close gets below that line also.
 13. `EMA_8_21_cross_5`
 This strategy uses both, shorts and longs, at a 4% distance of the cross entry point. Originally discussed by Discord users `EverForwardTech1972#1558` and `ChinaMatt#2982` (who coded it into Pine script) in the `.786 unlimited` [Discord](https://discord.gg/Sa8DxXdV).
-14. `BB-CIX`
-It leverages the volatility of the [CIX100](https://cix100.com/) token in the lower timeframes to scalp around the Bollinger bands in the 15m timeframe. Use with the `config-bb-cix.json` configuration file. You may also choose to use `--eps` for multiple entries.
+14. `BB_-_CIX`
+It leverages the volatility of the [CIX100](https://cix100.com/) token in the lower timeframes to scalp around the Bollinger bands in the 15m timeframe. Use with the `config-bb-cix.json` configuration file.
+15. `BB_CIX_2`
+1m-version of the one above with fixed trailing R:R and no exit signals.
 
 # Disclaimer
 * These strategies come with no warranties whatsoever. Use at your own risk.
