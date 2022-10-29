@@ -59,6 +59,7 @@ This strategy uses both, shorts and longs, at a 4% distance of the cross entry p
 It leverages the volatility of the [CIX100](https://cix100.com/) token in the lower timeframes to scalp around the Bollinger bands in the 15m timeframe. Use with the `config-bb-cix.json` configuration file.
 15. `BB_CIX_2`
 1m-version of the one above with fixed trailing R:R and no exit signals.
+16. `VolatilityCatcher`. Uses a similar technique to the strategies using CIX, but this time for a broader (but hand-picked) set of tokens that exhibit similar volatility profile. Use with the `config-volatilitycatcher.json` config file.
 
 # Disclaimer
 * These strategies come with no warranties whatsoever. Use at your own risk.
