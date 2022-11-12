@@ -31,20 +31,20 @@ class VolatilityCatcher(IStrategy):
     INTERFACE_VERSION = 3
 
     minimal_roi = {
-        "0": 0.063,
-        "34": 0.029,
-        "83": 0.016,
-        "182": 0
+        "0": 0.14,
+        "37": 0.078,
+        "97": 0.023,
+        "160": 0
     }
 
-    stoploss = -0.312
-    use_custom_stoploss = False 
+    stoploss = -0.99 # Disabled, using custom
+    use_custom_stoploss = True 
 
     # Trailing stop:
     trailing_stop = True
-    trailing_stop_positive = 0.061
-    trailing_stop_positive_offset = 0.082
-    trailing_only_offset_is_reached = False
+    trailing_stop_positive = 0.347
+    trailing_stop_positive_offset = 0.358
+    trailing_only_offset_is_reached = True
 
     # Optimal timeframe for the strategy.
     timeframe = '5m'
@@ -77,17 +77,17 @@ class VolatilityCatcher(IStrategy):
     pSL_2 = DecimalParameter(0.020, 0.070, default=0.040, decimals=3, space='sell', optimize=opt_HSL, load=True)
 
     buy_params = {
-        "rsi_threshold": 50,
-        "reversal_threshold": 0.45
+        "reversal_threshold": 0.36,
+        "rsi_threshold": 10,
     }
 
     sell_params = {
-        "rsi_overbought": 96,
-        "pHSL": -0.141,
-        "pPF_1": 0.019,
-        "pPF_2": 0.079,
-        "pSL_1": 0.017,
-        "pSL_2": 0.069,
+        "pHSL": -0.189,
+        "pPF_1": 0.009,
+        "pPF_2": 0.065,
+        "pSL_1": 0.009,
+        "pSL_2": 0.057,
+        "rsi_overbought": 89,
     }
 
 
@@ -222,9 +222,3 @@ class VolatilityCatcher(IStrategy):
             'exit_long'] = 1
 
         return dataframe
-
-
-# Helper function 
-def to_minutes(**timdelta_kwargs):
-    return int(timedelta(**timdelta_kwargs).total_seconds() / 60)
-
